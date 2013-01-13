@@ -24,7 +24,7 @@ class BarcodeService{
         $this->webroot = $webroot;    
         $this->logger = $logger;
     }
-    public function saveAs($type, $text, $file){
+    public function saveAs($type, $text, $file, $options){
         @unlink($file);
         switch ($type){
             case $type == 'qr':
@@ -34,7 +34,7 @@ class BarcodeService{
             case is_numeric($type):
                 $type = $this->types[$type];
             default:
-                $barcodeOptions = array('text' => $text);
+                $barcodeOptions = array_merge(array('text' => $text), $options);
                 $rendererOptions = array();
                 $image = new Image(
                     $imageResource = Barcode::factory(
@@ -58,7 +58,7 @@ class BarcodeService{
         $text = urldecode($enctext);
         $filename = $this->getAbsoluteBarcodeDir($type).$this->getBarcodeFilename($text);
         if(!file_exists($filename)){
-            $this->saveAs($type, $text, $filename);
+            $this->saveAs($type, $text, $filename, $options);
         }
         if(!$absolut){
             $path = DIRECTORY_SEPARATOR.$this->webdir.$this->getTypeDir($type).$this->getBarcodeFilename($text);
