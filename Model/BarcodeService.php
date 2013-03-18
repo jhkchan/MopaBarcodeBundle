@@ -35,7 +35,7 @@ class BarcodeService{
                 $type = $this->types[$type];
             default:
                 $barcodeOptions = array_merge(array('text' => $text), $options);
-                $rendererOptions = array();
+                $rendererOptions = $options;
                 $image = new Image(
                     $imageResource = Barcode::factory(
                         $type, 'image', $barcodeOptions, $rendererOptions, false
